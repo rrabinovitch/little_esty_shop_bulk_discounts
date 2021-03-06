@@ -37,6 +37,8 @@ RSpec.describe 'merchant dashboard' do
     @transaction6 = Transaction.create!(credit_card_number: 879799, result: 1, invoice_id: @invoice_7.id)
     @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_2.id)
 
+    @discount_1 = BulkDiscount.create!(name: "Going Out of Business", discount: 0.2, threshold: 10, merchant: @merchant1)
+
     visit merchant_dashboard_index_path(@merchant1)
   end
 
@@ -60,7 +62,7 @@ RSpec.describe 'merchant dashboard' do
     expect(current_path).to eq("/merchant/#{@merchant1.id}/invoices")
   end
 
-  it 'shows the names of the top 5 customers with successful transactions' do
+  xit 'shows the names of the top 5 customers with successful transactions' do
     within("#customer-#{@customer_1.id}") do
       expect(page).to have_content(@customer_1.first_name)
       expect(page).to have_content(@customer_1.last_name)
@@ -114,5 +116,16 @@ RSpec.describe 'merchant dashboard' do
 
   it "shows the date that the invoice was created in this format: Monday, July 18, 2019" do
     expect(page).to have_content(@invoice_1.created_at.strftime("%A, %B %-d, %Y"))
+  end
+
+  it 'I see a link to view all my discounts
+      When I click this link
+      Then I am taken to my bulk discounts index page' do
+    
+    expect(page).to have_link("View all discounts")
+
+    click_on("View all discounts")
+
+    expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1.id))
   end
 end
