@@ -119,13 +119,13 @@ RSpec.describe 'merchant dashboard' do
   end
 
   it 'I see a link to view all my discounts
-    When I click this link
-    Then I am taken to my bulk discounts index page' do
-    # save_and_open_page
+      When I click this link
+      Then I am taken to my bulk discounts index page' do
+    
     expect(page).to have_link("View all discounts")
 
     click_on("View all discounts")
 
-    expect(current_path).to eq(merchant_bulk_discounts_path)
+    expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1.id))
   end
 end
