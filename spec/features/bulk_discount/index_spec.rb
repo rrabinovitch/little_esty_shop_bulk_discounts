@@ -45,7 +45,7 @@ RSpec.describe 'Bulk Discount dashboard/index' do
   end
 
   it 'I see all of my bulk discounts including their
-      percentage discount and quantity thresholds' do
+    percentage discount and quantity thresholds' do
 
     expect(page).to have_content(@discount_1.name)
     expect(page).to have_content("Discount: #{@discount_1.discount_to_percentage}%")
@@ -63,8 +63,8 @@ RSpec.describe 'Bulk Discount dashboard/index' do
   end
 
   it 'I see a link to create a new discount
-      When I click this link
-      Then I am taken to a new page where I see a form to add a new bulk discount' do
+    When I click this link
+    Then I am taken to a new page where I see a form to add a new bulk discount' do
 
     expect(page).to have_link("Create New Bulk Discount")
 
@@ -74,8 +74,8 @@ RSpec.describe 'Bulk Discount dashboard/index' do
   end
 
   it 'When I fill in the form with valid data
-      Then I am redirected back to the bulk discount index
-      And I see my new bulk discount listed' do
+    Then I am redirected back to the bulk discount index
+    And I see my new bulk discount listed' do
     visit new_merchant_bulk_discount_path(@merchant1)
 
     fill_in "name", with: "End of Summer Sale"
@@ -87,5 +87,21 @@ RSpec.describe 'Bulk Discount dashboard/index' do
     expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1.id))
 
     expect(page).to have_content("End of Summer Sale")
+  end
+
+  it 'Next to each bulk discount I see a link to delete it
+    When I click this link
+    Then I am redirected back to the bulk discounts index page
+    And I no longer see the discount listed' do
+    
+    within("#discount-#{@discount_1.id}") do
+      expect(page).to have_link("Delete Bulk Discount")
+
+      click_on("Delete Bulk Discount")
+    end
+
+    expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1.id))
+
+    expect(page).to_not have_content(@discount_1.name)
   end
 end
