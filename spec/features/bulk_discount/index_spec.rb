@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Bulk Discount dashboard' do
+RSpec.describe 'Bulk Discount dashboard/index' do
   before :each do
     @merchant1 = Merchant.create!(name: 'Hair Care')
 
@@ -46,7 +46,7 @@ RSpec.describe 'Bulk Discount dashboard' do
 
   it 'I see all of my bulk discounts including their
       percentage discount and quantity thresholds' do
-      
+
     expect(page).to have_content(@discount_1.name)
     expect(page).to have_content("Discount: #{@discount_1.discount_to_percentage}%")
     expect(page).to have_content("Threshold: #{@discount_1.threshold}")
@@ -62,4 +62,30 @@ RSpec.describe 'Bulk Discount dashboard' do
     expect(current_path).to eq(merchant_bulk_discount_path(@merchant1, @discount_1))
   end
 
+  it 'I see a link to create a new discount
+      When I click this link
+      Then I am taken to a new page where I see a form to add a new bulk discount' do
+
+    expect(page).to have_link("Create New Bulk Discount")
+
+    click_on("Create New Bulk Discount")
+
+    expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1))
+  end
+
+  it 'When I fill in the form with valid data
+      Then I am redirected back to the bulk discount index
+      And I see my new bulk discount listed' do
+    visit new_merchant_bulk_discount_path(@merchant1)
+
+    fill_in "name", with: "End of Summer Sale"
+    fill_in "discount", with: 0.3
+    fill_in "threshold", with: 15
+
+    click_on("Submit")
+
+    expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1.id))
+
+    expect(page).to have_content("End of Summer Sale")
+  end
 end
