@@ -54,7 +54,7 @@ RSpec.describe 'Bulk Discount show page' do
   it 'I see a link to edit the bulk discount
     When I click this link
     Then I am taken to a new page with a form to edit the discount' do
-    save_and_open_page
+    
     expect(page).to have_link('Edit Bulk Discount')
 
     click_on('Edit Bulk Discount')
