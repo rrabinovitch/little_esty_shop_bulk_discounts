@@ -93,7 +93,7 @@ RSpec.describe 'Bulk Discount dashboard/index' do
     When I click this link
     Then I am redirected back to the bulk discounts index page
     And I no longer see the discount listed' do
-    
+
     within("#discount-#{@discount_1.id}") do
       expect(page).to have_link("Delete Bulk Discount")
 
@@ -103,5 +103,15 @@ RSpec.describe 'Bulk Discount dashboard/index' do
     expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1.id))
 
     expect(page).to_not have_content(@discount_1.name)
+  end
+
+  it 'I see a section with a header of "Upcoming Holidays"
+    In this section the name and date of the next 3 upcoming US holidays are listed.' do 
+
+    within(".holidays") do
+      expect(page).to have_content("International Women's Day")
+      expect(page).to have_content("Day Light's Savings")
+      expect(page).to have_content("St. Patricks Day")
+    end
   end
 end
