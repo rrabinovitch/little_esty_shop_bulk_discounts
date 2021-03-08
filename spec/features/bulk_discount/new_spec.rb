@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Bulk Discount show page' do
+RSpec.describe 'Bulk Discount new page' do
   before :each do
     @merchant1 = Merchant.create!(name: 'Hair Care')
 
@@ -38,27 +38,34 @@ RSpec.describe 'Bulk Discount show page' do
     @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_2.id)
 
     @discount_1 = BulkDiscount.create!(name: "Going Out of Business", discount: 0.2, threshold: 10, merchant: @merchant1)
-    # @discount_2 = BulkDiscount.create!(name: "Going Out of Business", discount: 0.2, threshold: 10, merchant: @merchant1)
-    # @discount_3 = BulkDiscount.create!(name: "Going Out of Business", discount: 0.2, threshold: 10, merchant: @merchant1)
 
-    visit  merchant_bulk_discount_path(@merchant1.id, @discount_1.id)
+    visit new_merchant_bulk_discount_path(@merchant1)
   end
 
-  it 'I see the bulk discounts quantity threshold and percentage discount' do
+  it 'When I fill in the form with valid data
+    Then I am redirected back to the bulk discount index
+    And I see my new bulk discount listed' do
 
-    expect(page).to have_content(@discount_1.name)
-    expect(page).to have_content("Discount: #{@discount_1.discount_to_percentage}%")
-    expect(page).to have_content("Threshold: #{@discount_1.threshold}")
+    fill_in "Name", with: "End of Summer Sale"
+    fill_in "Discount", with: 0.3
+    fill_in "Threshold", with: 15
+
+    click_on("Submit")
+
+    expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1.id))
+
+    expect(page).to have_content("End of Summer Sale")
   end
 
-  it 'I see a link to edit the bulk discount
-    When I click this link
-    Then I am taken to a new page with a form to edit the discount' do
+  it "shows a flash message if not all sections are filled in" do
 
-    expect(page).to have_link('Edit Bulk Discount')
+    fill_in "Name", with: ""
+    fill_in "Discount", with: 0.15
+    fill_in "Threshold", with: 12
 
-    click_on('Edit Bulk Discount')
+    click_button "Submit"
 
-    expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant1, @discount_1))
+    expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1))
+    expect(page).to have_content("All fields must be completed, get your act together.")
   end
 end

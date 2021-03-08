@@ -38,8 +38,6 @@ RSpec.describe 'Bulk Discount dashboard/index' do
     @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_2.id)
 
     @discount_1 = BulkDiscount.create!(name: "Going Out of Business", discount: 0.2, threshold: 10, merchant: @merchant1)
-    # @discount_2 = BulkDiscount.create!(name: "Going Out of Business", discount: 0.2, threshold: 10, merchant: @merchant1)
-    # @discount_3 = BulkDiscount.create!(name: "Going Out of Business", discount: 0.2, threshold: 10, merchant: @merchant1)
 
     visit  merchant_bulk_discounts_path(@merchant1)
   end
@@ -73,22 +71,6 @@ RSpec.describe 'Bulk Discount dashboard/index' do
     expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1))
   end
 
-  it 'When I fill in the form with valid data
-    Then I am redirected back to the bulk discount index
-    And I see my new bulk discount listed' do
-    visit new_merchant_bulk_discount_path(@merchant1)
-
-    fill_in "name", with: "End of Summer Sale"
-    fill_in "discount", with: 0.3
-    fill_in "threshold", with: 15
-
-    click_on("Submit")
-
-    expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1.id))
-
-    expect(page).to have_content("End of Summer Sale")
-  end
-
   it 'Next to each bulk discount I see a link to delete it
     When I click this link
     Then I am redirected back to the bulk discounts index page
@@ -107,7 +89,7 @@ RSpec.describe 'Bulk Discount dashboard/index' do
 
   it 'I see a section with a header of "Upcoming Holidays"
     In this section the name and date of the next 3 upcoming US holidays are listed.' do
-      
+
     within(".holidays") do
       expected = "Memorial Day, 2021-05-31Independence Day, 2021-07-05Labour Day, 2021-09-0"
       expect(page).to have_content(expected)
