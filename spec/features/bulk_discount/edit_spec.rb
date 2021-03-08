@@ -68,7 +68,7 @@ RSpec.describe 'Bulk Discount edit page' do
 
     fill_in "Name", with: ""
     fill_in "Discount", with: 0.15
-    fill_in "threshold", with: 12
+    fill_in "Threshold", with: 12
 
     click_button "Submit"
 
