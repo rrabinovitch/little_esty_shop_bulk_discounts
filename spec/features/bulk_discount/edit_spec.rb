@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Bulk Discount dashboard/index' do
+RSpec.describe 'Bulk Discount edit page' do
   before :each do
     @merchant1 = Merchant.create!(name: 'Hair Care')
 
@@ -42,73 +42,37 @@ RSpec.describe 'Bulk Discount dashboard/index' do
     visit  merchant_bulk_discounts_path(@merchant1)
   end
 
-  it 'I see all of my bulk discounts including their
-    percentage discount and quantity thresholds' do
+  it 'In the edit form, I see that the discounts current attributes are pre-poluated in the form
+    When I change any/all of the information and click submit
+    Then I am redirected to the bulk discounts show page
+    And I see that the discounts attributes have been updated' do
 
-    expect(page).to have_content(@discount_1.name)
-    expect(page).to have_content("Discount: #{@discount_1.discount_to_percentage}%")
-    expect(page).to have_content("Threshold: #{@discount_1.threshold}")
-  end
+    visit edit_merchant_bulk_discount_path(@merchant1, @discount_1)
 
-  it 'And each bulk discount listed includes a link to its show page' do
-    within("#discount-#{@discount_1.id}") do
-      expect(page).to have_link("#{@discount_1.name}")
+    expect(find_field("Name").value).to eq(@discount_1.name)
+    expect(find_field("Discount").value).to eq(@discount_1.discount.to_s)
+    expect(find_field("Threshold").value).to eq(@discount_1.threshold.to_s)
 
-      click_on("#{@discount_1.name}")
-    end
-
-    expect(current_path).to eq(merchant_bulk_discount_path(@merchant1, @discount_1))
-  end
-
-  it 'I see a link to create a new discount
-    When I click this link
-    Then I am taken to a new page where I see a form to add a new bulk discount' do
-
-    expect(page).to have_link("Create New Bulk Discount")
-
-    click_on("Create New Bulk Discount")
-
-    expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1))
-  end
-
-  it 'When I fill in the form with valid data
-    Then I am redirected back to the bulk discount index
-    And I see my new bulk discount listed' do
-    visit new_merchant_bulk_discount_path(@merchant1)
-
-    fill_in "name", with: "End of Summer Sale"
-    fill_in "discount", with: 0.3
-    fill_in "threshold", with: 15
+    fill_in "Discount", with: 0.25
 
     click_on("Submit")
 
-    expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1.id))
+    expect(current_path).to eq(merchant_bulk_discount_path(@merchant1, @discount_1))
 
-    expect(page).to have_content("End of Summer Sale")
+    expect(page).to have_content("Discount: 25%")
+    expect(page).to have_content("Successfully Updated Bulk Discount Info!")
   end
 
-  it 'Next to each bulk discount I see a link to delete it
-    When I click this link
-    Then I am redirected back to the bulk discounts index page
-    And I no longer see the discount listed' do
+  it "shows a flash message if not all sections are filled in" do
+    visit edit_merchant_bulk_discount_path(@merchant1, @discount_1)
 
-    within("#discount-#{@discount_1.id}") do
-      expect(page).to have_link("Delete Bulk Discount")
+    fill_in "Name", with: ""
+    fill_in "Discount", with: 0.15
+    fill_in "threshold", with: 12
 
-      click_on("Delete Bulk Discount")
-    end
+    click_button "Submit"
 
-    expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1.id))
-
-    expect(page).to_not have_content(@discount_1.name)
-  end
-
-  it 'I see a section with a header of "Upcoming Holidays"
-    In this section the name and date of the next 3 upcoming US holidays are listed.' do
-
-    within(".holidays") do
-      expected = "Memorial Day, 2021-05-31Independence Day, 2021-07-05Labour Day, 2021-09-0"
-      expect(page).to have_content(expected)
-    end
+    expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant1, @discount_1))
+    expect(page).to have_content("All fields must be completed, get your act together.")
   end
 end
