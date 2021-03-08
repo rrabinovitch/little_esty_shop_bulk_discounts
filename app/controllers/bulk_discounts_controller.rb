@@ -11,14 +11,18 @@ class BulkDiscountsController < ApplicationController
   end
 
   def new
+    @bulk_discount = BulkDiscount.new
   end
 
   def create
-    BulkDiscount.create!(name: params[:name],
-                         discount: params[:discount],
-                         threshold: params[:discount],
-                         id: find_new_id, merchant: @merchant)
-    redirect_to merchant_bulk_discounts_path(@merchant.id)
+    @bulk_discount = @merchant.bulk_discounts.new(bulk_discount_params)
+    if @bulk_discount.save
+      flash.notice = "Successfully Added New Bulk Discount Info!"
+      redirect_to merchant_bulk_discounts_path(@merchant)
+    else
+      flash.notice = "All fields must be completed, get your act together."
+      redirect_to new_merchant_bulk_discount_path(@merchant)
+    end
   end
 
   def destroy
@@ -40,16 +44,13 @@ class BulkDiscountsController < ApplicationController
   end
 
   private
+
   def bulk_discount_params
-    params.require(:bulk_discount).permit(:name, :discount, :threshold, :merchant_id)
+    params.require(:bulk_discount).permit(:name, :discount, :threshold)
   end
 
   def find_merchant
     @merchant = Merchant.find(params[:merchant_id])
-  end
-
-  def find_new_id
-    BulkDiscount.last.id + 1
   end
 
   def find_discount

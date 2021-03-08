@@ -1,8 +1,11 @@
 require 'rails_helper'
 
-describe 'Admin Invoices Index Page' do
+describe 'Admin Invoices Show Page' do
   before :each do
     @m1 = Merchant.create!(name: 'Merchant 1')
+
+    @discount_1 = BulkDiscount.create!(name: "Going Out of Business", discount: 0.2, threshold: 10, merchant: @m1)
+    @discount_2 = BulkDiscount.create!(name: "End of Summer Sale", discount: 0.3, threshold: 15, merchant: @m1)
 
     @c1 = Customer.create!(first_name: 'Yo', last_name: 'Yoz', address: '123 Heyyo', city: 'Whoville', state: 'CO', zip: 12345)
     @c2 = Customer.create!(first_name: 'Hey', last_name: 'Heyz')
@@ -53,10 +56,10 @@ describe 'Admin Invoices Index Page' do
     expect(page).to_not have_content(@ii_3.status)
   end
 
-  it 'should display the total revenue the invoice will generate' do
-    expect(page).to have_content("Total Revenue: $#{@i1.total_revenue}")
+  it 'should display the total revenue before discounts the invoice will generate' do
+    expect(page).to have_content("Total Revenue Before Discount(s): $#{@i1.total_revenue_before_discount}")
 
-    expect(page).to_not have_content(@i2.total_revenue)
+    expect(page).to_not have_content(@i2.total_revenue_before_discount)
   end
 
   it 'should have status as a select field that updates the invoices status' do
@@ -68,5 +71,11 @@ describe 'Admin Invoices Index Page' do
       expect(current_path).to eq(admin_invoice_path(@i1))
       expect(@i1.status).to eq('complete')
     end
+  end
+
+  it 'I see that the total revenue includes bulk discounts in the calculation' do
+    visit admin_invoice_path(@i1)
+
+    expect(page).to have_content(@i1.total_revenue_after_discount)
   end
 end
