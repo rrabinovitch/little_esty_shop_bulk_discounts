@@ -20,7 +20,6 @@
   <p> Created on: <%= @invoice.created_at.strftime("%A, %B %-d, %Y") %></p>
   <p>Total Revenue: $<%= @invoice.total_revenue %></p>
 
-
   <h4>Customer:</h4>
     <%= @customer.first_name %> <%= @customer.last_name %><br>
   <br>
@@ -33,6 +32,7 @@
         <th class="th1">Quantity</th>
         <th class="th1">Unit Price</th>
         <th class="th1">Status</th>
+        <th class="th1">Discounts Applied</th>
       </tr>
     </thead>
 
@@ -47,6 +47,11 @@
                                             <%= f.select :status, Invoice.statuses.keys, selected: "#{@invoice.status}" %>
                                             <%= f.submit 'Update Invoice' %>
                                           <% end %></td><br/>
+            <td style="text-align:center">
+              <% if !i.applicable_discount.nil? %>
+                <%= link_to "#{i.applicable_discount.first}%", merchant_bulk_discount_path(@merchant.id, i.applicable_discount[1]) %>
+              <% end %>
+            </td>
           </tr>
         </section>
       <% end %>

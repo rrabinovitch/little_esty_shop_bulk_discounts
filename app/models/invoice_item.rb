@@ -20,15 +20,19 @@ class InvoiceItem < ApplicationRecord
   end
 
   def revenue
-    revenue = (unit_price * quantity).to_f
-    revenue - (revenue * (self.applicable_discount.to_f))
+    if applicable_discount.nil?
+      (unit_price * quantity).to_f
+    else
+      revenue = (unit_price * quantity).to_f
+      revenue - (revenue * (applicable_discount.first.to_f))
+    end
   end
 
   def applicable_discount
     bulk_discounts
     .where('? >= threshold', self.quantity)
     .order(discount: :desc, threshold: :desc)
-    .pluck(:discount)
+    .pluck(:discount, :id)
     .first
   end
 end
