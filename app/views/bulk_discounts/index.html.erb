@@ -23,5 +23,10 @@
         <p>Discount: <%= discount.discount_to_percentage %>%</p>
         <p>Threshold: <%= discount.threshold %></p>
         <%= link_to "Delete Bulk Discount", merchant_bulk_discount_path(@merchant, discount), method: :delete %>
-    <% end %>
+    <% end %><br><hr>
+
+    <section class="holidays">
+      <h3>Upcoming Holidays</h3>
+        <%= HolidayService.next_three_info %>
+    </section>
 </body>

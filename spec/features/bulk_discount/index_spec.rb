@@ -41,7 +41,7 @@ RSpec.describe 'Bulk Discount dashboard/index' do
     # @discount_2 = BulkDiscount.create!(name: "Going Out of Business", discount: 0.2, threshold: 10, merchant: @merchant1)
     # @discount_3 = BulkDiscount.create!(name: "Going Out of Business", discount: 0.2, threshold: 10, merchant: @merchant1)
 
-    visit  merchant_bulk_discounts_path(@merchant1.id)
+    visit  merchant_bulk_discounts_path(@merchant1)
   end
 
   it 'I see all of my bulk discounts including their
@@ -106,12 +106,11 @@ RSpec.describe 'Bulk Discount dashboard/index' do
   end
 
   it 'I see a section with a header of "Upcoming Holidays"
-    In this section the name and date of the next 3 upcoming US holidays are listed.' do 
-
+    In this section the name and date of the next 3 upcoming US holidays are listed.' do
+      
     within(".holidays") do
-      expect(page).to have_content("International Women's Day")
-      expect(page).to have_content("Day Light's Savings")
-      expect(page).to have_content("St. Patricks Day")
+      expected = "Memorial Day, 2021-05-31Independence Day, 2021-07-05Labour Day, 2021-09-0"
+      expect(page).to have_content(expected)
     end
   end
 end
