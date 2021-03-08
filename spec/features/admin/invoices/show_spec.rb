@@ -56,8 +56,8 @@ describe 'Admin Invoices Show Page' do
     expect(page).to_not have_content(@ii_3.status)
   end
 
-  it 'should display the total revenue the invoice will generate' do
-    expect(page).to have_content("Total Revenue: $#{@i1.total_revenue_before_discount}")
+  it 'should display the total revenue before discounts the invoice will generate' do
+    expect(page).to have_content("Total Revenue Before Discount(s): $#{@i1.total_revenue_before_discount}")
 
     expect(page).to_not have_content(@i2.total_revenue_before_discount)
   end
@@ -74,8 +74,8 @@ describe 'Admin Invoices Show Page' do
   end
 
   it 'I see that the total revenue includes bulk discounts in the calculation' do
-    visit admin_invoice_path(@m1, @ii_1)
+    visit admin_invoice_path(@i1)
 
-    expect(page).to have_content(@ii_1.total_revenue_after_discount)
+    expect(page).to have_content(@i1.total_revenue_after_discount)
   end
 end
