@@ -31,5 +31,5 @@ This project requires Ruby 2.5.3.
 
 ## Database Schema
 
-## Schema
+![alt text](https://user-images.githubusercontent.com/71908665/110520918-530d5b00-80cc-11eb-8f99-606b6e382453.png)
 
