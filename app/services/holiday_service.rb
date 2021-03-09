@@ -1,4 +1,3 @@
-require 'faraday'
 require './app/poros/holiday'
 
 class HolidayService < ApiService
