@@ -55,8 +55,8 @@ Merchant.destroy_all
 @transaction7 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_7.id)
 @transaction8 = Transaction.create!(credit_card_number: 203942, result: 1, invoice_id: @invoice_8.id)
 
-@bd_1 = BulkDiscount.create!(name: "Going Out of Business", discount: 0.2, threshold: 10, merchant_id: @merchant1)
-@bd_2 = BulkDiscount.create!(name: "Another Day Another Sale", discount: 0.3, threshold: 15, merchant_id: @merchant1)
+@bd_1 = BulkDiscount.create!(name: "Going Out of Business", discount: 0.2, threshold: 10, merchant_id: @merchant1.id)
+@bd_2 = BulkDiscount.create!(name: "Another Day Another Sale", discount: 0.3, threshold: 15, merchant_id: @merchant1.id)
 @invoicea = Invoice.create!(customer_id: @customer_6.id, status: 1)
 @ii_a1 = InvoiceItem.create!(invoice_id: @invoicea.id, item_id: @item_1.id, quantity: 12, unit_price: 10, status: 2)
 @ii_a2 = InvoiceItem.create!(invoice_id: @invoicea.id, item_id: @item_2.id, quantity: 15, unit_price: 10, status: 2)
