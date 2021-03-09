@@ -39,6 +39,7 @@ describe 'Admin Invoices Show Page' do
   end
 
   it 'should display all the items on the invoice' do
+    
     expect(page).to have_content(@item_1.name)
     expect(page).to have_content(@item_2.name)
 
