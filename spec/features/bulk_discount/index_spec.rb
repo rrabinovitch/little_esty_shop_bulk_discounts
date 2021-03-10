@@ -77,7 +77,7 @@ RSpec.describe 'Bulk Discount dashboard/index' do
     And I no longer see the discount listed' do
 
     within("#discount-#{@discount_1.id}") do
-      expect(page).to have_link("Delete Bulk Discount")
+      expect(page).to have_button("Delete Bulk Discount")
 
       click_on("Delete Bulk Discount")
     end
