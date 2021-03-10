@@ -22,7 +22,7 @@
         </li>
         <p>Discount: <%= discount.discount_to_percentage %>%</p>
         <p>Threshold: <%= discount.threshold %></p>
-        <%= link_to "Delete Bulk Discount", merchant_bulk_discount_path(@merchant, discount), method: :delete %>
+        <%= button_to "Delete Bulk Discount", merchant_bulk_discount_path(@merchant, discount), method: :delete %><br><br>
     <% end %><br><hr>
 
     <section class="holidays">
