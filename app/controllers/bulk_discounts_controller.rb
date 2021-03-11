@@ -5,7 +5,6 @@ class BulkDiscountsController < ApplicationController
   def index
     @bulk_discounts = BulkDiscount.all
     @holidays = HolidayFacade.next_three_holidays
-    # @holidays = HolidayService.next_three_holidays
   end
 
   def show
