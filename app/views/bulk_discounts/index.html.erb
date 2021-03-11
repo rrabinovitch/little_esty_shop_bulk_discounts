@@ -27,6 +27,10 @@
 
     <section class="holidays">
       <h3>Upcoming Holidays</h3>
-        <%= HolidayService.next_three_info %>
+      <% @holidays.each do|holiday| %>
+        <li class="holiday">
+          <%= "#{holiday.name}: #{holiday.date}" %>
+        </li>
+      <% end %>
     </section>
 </body>

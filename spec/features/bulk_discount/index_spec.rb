@@ -91,8 +91,16 @@ RSpec.describe 'Bulk Discount dashboard/index' do
     In this section the name and date of the next 3 upcoming US holidays are listed.' do
 
     within(".holidays") do
-      expected = "Memorial Day, 2021-05-31Independence Day, 2021-07-05Labour Day, 2021-09-0"
-      expect(page).to have_content(expected)
+      # this test won't work in long run, but keeping it simple for now since stubbing API responses hasn't yet been taught
+
+      expect(page).to have_content("Memorial Day")
+      expect(page).to have_content("2021-05-31")
+
+      expect(page).to have_content("Independence Day")
+      expect(page).to have_content("2021-07-05")
+
+      expect(page).to have_content("Labour Day")
+      expect(page).to have_content("2021-09-06")
     end
   end
 end

@@ -4,6 +4,10 @@ class BulkDiscountsController < ApplicationController
 
   def index
     @bulk_discounts = BulkDiscount.all
+
+    # calling on HolidayFacade to get a collection of POROs that represent the next 3 holidays
+    # this var is an array of Holiday POROs (see HolidayFacade line 12)
+    @holidays = HolidayFacade.next_three_holidays
   end
 
   def show
