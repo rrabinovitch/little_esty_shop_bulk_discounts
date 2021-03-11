@@ -28,8 +28,8 @@
     <section class="holidays">
       <h3>Upcoming Holidays</h3>
       <% @holidays.each do|holiday| %>
-        <li>
-          <%= holiday.name %> is coming up on <%= holiday.date %>
+        <li class="holiday">
+          <%= "#{holiday.name}: #{holiday.date}" %>
         </li>
       <% end %>
     </section>
